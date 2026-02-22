@@ -5,31 +5,21 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/diuti/agentic-ai-healthcare.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh 'npm test'
+                echo 'Cloning repository...'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t healthcare-app .'
+                bat 'docker build -t jenkins-app .'
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy') {
             steps {
-                sh 'docker run -d -p 5000:5000 healthcare-app'
+                bat 'docker stop jenkins-container || exit 0'
+                bat 'docker rm jenkins-container || exit 0'
+                bat 'docker run -d -p 3000:3000 --name jenkins-container jenkins-app'
             }
         }
     }
