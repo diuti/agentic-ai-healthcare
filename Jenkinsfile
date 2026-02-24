@@ -15,6 +15,18 @@ pipeline {
             }
         }
 
+        // add demo stages
+        stage('Testing Backend'){
+            steps{
+                echo 'Backend Tested Successfully'
+            }
+        }
+         stage('Testing Frontend'){
+            steps{
+                echo 'Frontend Tested Successfully'
+            }
+        }
+
         stage('Deploy') {
             steps {
                 bat 'docker stop jenkins-container || exit 0'
